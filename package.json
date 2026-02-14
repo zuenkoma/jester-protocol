@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "2d-physics-engine": "github:zuenkoma/2d-physics-engine",
+    "binary-rw": "github:zuenkoma/binary-rw",
     "webgl-renderer": "github:zuenkoma/webgl-renderer"
   }
 }

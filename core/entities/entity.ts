@@ -5,12 +5,30 @@ export default abstract class Entity {
     abstract drawable: Drawable;
     body: Body;
 
-    constructor(x: number, y: number, rotation = 0) {
-        this.body = new Body(new Vector2(x, y), rotation);
+    constructor(position: Vector2, rotation = 0) {
+        this.body = new Body(position, rotation);
     }
 
     protected addBoxCollider(width: number, height: number) {
         this.body.addCollider(new BoxCollider(new Vector2(width, height)));
+    }
+
+    getPosition() {
+        return this.body.position;
+    }
+    setPosition(position: Vector2) {
+        this.body.position = position;
+    }
+
+    getRotation() {
+        return this.body.rotation;
+    }
+    setRotation(rotation: number) {
+        this.body.rotation = rotation;
+    }
+
+    getFlags() {
+        return 0;
     }
 
     update(dt: number) {
