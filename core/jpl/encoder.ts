@@ -37,4 +37,6 @@ export default function encodeJPL(rooms: Room[]) {
             }
         }
     }
+
+    return writer.toBuffer();
 }
