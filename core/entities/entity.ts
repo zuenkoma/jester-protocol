@@ -6,7 +6,7 @@ export default abstract class Entity {
     body: Body;
 
     constructor(position: Vector2, rotation = 0) {
-        this.body = new Body(position, rotation);
+        this.body = new Body(position.clone().div(32), rotation);
     }
 
     protected addBoxCollider(width: number, height: number) {
@@ -32,8 +32,9 @@ export default abstract class Entity {
     }
 
     update(dt: number) {
-        this.drawable.x = this.body.position.x;
-        this.drawable.y = this.body.position.y;
+        const position = this.body.position.clone().mult(32);
+        this.drawable.x = position.x;
+        this.drawable.y = position.y;
         this.drawable.rotation = this.body.rotation * 180 / Math.PI;
         this.drawable.update(dt);
     }

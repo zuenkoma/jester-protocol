@@ -1,10 +1,16 @@
 import { Vector2, World } from '2d-physics-engine';
-import { Drawable, Sprite, type Texture } from 'webgl-renderer';
+import { Drawable, Sprite, Texture } from 'webgl-renderer';
+import backgroundTexture1 from './backgrounds/1.png';
+import backgroundTexture2 from './backgrounds/2.png';
 import type Entity from './entities/entity.ts';
 import Player from './entities/types/player.ts';
 import type Wire from './wire.ts';
+import Border from './entities/types/border.ts';
 
-const backgrounds: Texture[] = [];
+const backgrounds = await Promise.all([
+    Texture.load(backgroundTexture1, { antialias: false }),
+    Texture.load(backgroundTexture2, { antialias: false })
+]);
 
 interface CachedEntity {
     position: Vector2;
@@ -25,8 +31,12 @@ export default class Room {
         playerSpawnPosition: Vector2,
         playerSpawnRotation: number
     ) {
+        this.world.gravity.y *= 2;
+
         this.background = new Sprite(backgrounds[backgroundTint % backgrounds.length]);
         this.drawable.addChild(this.background);
+
+        this.addEntity(new Border(new Vector2(0, 0), 0));
 
         this.player = new Player(playerSpawnPosition, playerSpawnRotation);
         this.addEntity(this.player);
@@ -73,7 +83,9 @@ export default class Room {
     }
 
     update(dt: number) {
-        this.world.step(dt);
-        this.drawable.update(dt);
+        this.world.step(dt / 1000);
+        for (const entity of this.getEntities()) {
+            entity.update(dt);
+        }
     }
 }
